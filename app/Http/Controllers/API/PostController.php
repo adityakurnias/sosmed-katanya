@@ -15,8 +15,8 @@ class PostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'caption' => 'required|string',
-            'post_attachments' => 'required|array',
-            'post_attachments.*' => 'required|file|mimetypes:image/jpeg,image/png,image/gif',
+            'post_attachments' => 'array',
+            'post_attachments.*' => 'file|mimetypes:image/jpeg,image/png,image/gif',
         ]);
 
         if ($validator->fails()) {
