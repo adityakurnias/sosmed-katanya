@@ -23,4 +23,26 @@ class Follows extends Model
     public function following() {
         return $this->belongsTo(User::class, 'following_id');
     }
+    
+    /**
+     * Scope a query to only include accepted follows.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAccepted($query)
+    {
+        return $query->where('is_accepted', true);
+    }
+    
+    /**
+     * Scope a query to only include pending follows.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePending($query)
+    {
+        return $query->where('is_accepted', false);
+    }
 }

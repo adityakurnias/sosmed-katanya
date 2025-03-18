@@ -99,4 +99,27 @@ class PostController extends Controller
             'posts' => $response
         ], 200);
     }
+
+    public function destroy($id)
+    {
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
+        $post = Post::find($id);
+
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+
+        if ($post->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Forbidden access'], 403);
+        }
+
+        PostAttachments::where('post_id', $post->id)->delete();
+
+        $post->delete();
+
+        return response()->json(null, 204);
+    }
 }
